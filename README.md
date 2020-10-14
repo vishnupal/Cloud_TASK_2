@@ -228,7 +228,7 @@ resource "aws_s3_bucket_public_access_block" "s3_type" {
 }
 ```
 ### cloud frant
-``
+```
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
   depends_on = [aws_s3_bucket.s3_bucket]
 }
