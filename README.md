@@ -11,7 +11,7 @@
 ### 8 Create a Cloudfront using s3 bucket(which contains images) and use the Cloudfront URL to  update in code in /var/www/html
 
 ## STEPS :
- ### 1 :- First of all I  create a VPC .
+ ### 1 :- First of all I  create a VPC. It provide Virual Private Network 
 ```
 resource "aws_vpc" "vishnupal_vpc" {
   cidr_block           = "192.168.0.0/16"
@@ -22,7 +22,7 @@ resource "aws_vpc" "vishnupal_vpc" {
   }
 }
 ```
-### 2 subnet
+### 2 I create one subnet 
 
 ```
 resource "aws_subnet" "vishnupal_subnet" {
@@ -35,21 +35,9 @@ resource "aws_subnet" "vishnupal_subnet" {
   }
 }
 ```
-### 3 Security Group
+### 3 I create a Security Group. It is a virtual Firewall Using this we create Inbound And Outbound Rules 
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
 resource "aws_security_group" "sg_vishnupal" {
 
   name   = "vp_sg"
@@ -112,27 +100,35 @@ resource "aws_security_group" "sg_vishnupal" {
 }
 ```
 
-### 5 EFS
-
+### 4 Now, We Create A EFS volume 
 ```
+ resource "aws_efs_file_system" "vishnupal_efs" {
+  creation_token = "vishnupal_efs"
+  tags = {
+    Name = "efs_of_vishnupal"
+  }
+}
+
+
 resource "aws_efs_mount_target" "vishnupal_efs_mount" {
   file_system_id  = "${aws_efs_file_system.vishnupal_efs.id}"
   subnet_id       = "${aws_subnet.vishnupal_subnet.id}"
   security_groups = [aws_security_group.sg_vishnupal.id]
 }
 
+```
 
-
-
+### 5 I Create internet gateway for connecting for Out side World
+```
 resource "aws_internet_gateway" "vishnupal_gw" {
   vpc_id = "${aws_vpc.vishnupal_vpc.id}"
   tags = {
     Name = "vishnupal_gw"
   }
 }
-```
-### 6 INT & route 
 
+```
+### 6  creating routing Table Routing Table
 ```
 resource "aws_route_table" "vishnupal_rt" {
   vpc_id = "${aws_vpc.vishnupal_vpc.id}"
@@ -153,7 +149,7 @@ resource "aws_route_table_association" "vishnupal_rta" {
   route_table_id = "${aws_route_table.vishnupal_rt.id}"
 }
 ```
-### 7 instance
+### 7 Now ,I run My AWS  Instance with Install Php, git, Apache server (httpd).
 
 ```
 resource "aws_instance" "task2_ins" {
@@ -189,7 +185,7 @@ resource "aws_instance" "task2_ins" {
   }
 }
 ```
-### 8 mount EFS
+### 8 Now ,We Mount our EFS volume and Copy our data into Volume
 
 ```
 resource "null_resource" "mount" {
@@ -211,7 +207,7 @@ resource "null_resource" "mount" {
   }
 }
 ```
-### S3 Bucket policy
+### 9 We Create a S3 bucket and apply Police On Bucket
 ```
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = "vishnupalbuck"
@@ -227,7 +223,7 @@ resource "aws_s3_bucket_public_access_block" "s3_type" {
   block_public_policy = true
 }
 ```
-### cloud frant
+### 10  I Create A  AWS CloudFront and Coonect with our S3 Bucket.
 ```
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
   depends_on = [aws_s3_bucket.s3_bucket]
@@ -285,39 +281,51 @@ viewer_certificate {
   }
 }
 ```
-!
+### 11  Apply Terraform
 ![](TASK2/Apply1.png)
 ![init](TASK2/init.png)
 ![](TASK2/Apply.png)
-### instance
+
+
+### AWS instance
 ![](TASK2/instance1.png)
-### Sg
+
+
+### Security Group
 ![](TASK2/SG.png)
-### vpc 
+
+
+### VPC service 
 ![](TASK2/VPC.png)
+
+
 ### Subnet
 ![](TASK2/Subnet.png)
-### EFS
+
+
+### EFS Volume
 ![](TASK2/EFS.png)
-### ITG
+
+
+### Internet Gateway
 ![](TASK2/ITG.png)
-### ROUTE
+
+
+### Routing Table
+
 ![](TASK2/RouteTable.png)
-### S3
+
+
+### S3 Bucket
 ![](TASK2/S3.png)
+
+
 ### CloudFrount
 ![](TASK2/CloudFront.png)
-### Site 
+
+
+### Our Site  
 ![](TASK2/site.png)
-
-
-
-
-
-
-
-
-
 
 
 
