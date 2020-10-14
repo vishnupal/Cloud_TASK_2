@@ -285,6 +285,32 @@ viewer_certificate {
   }
 }
 ```
+!
+![](TASK2/Apply1.png)
+![init](TASK2/init.png)
+![](TASK2/Apply.png)
+### instance
+![](TASK2/instance1.png)
+### Sg
+![](TASK2/SG.png)
+### vpc 
+![](TASK2/VPC.png)
+### Subnet
+![](TASK2/Subnet.png)
+### EFS
+![](TASK2/EFS.png)
+### ITG
+![](TASK2/ITG.png)
+### ROUTE
+![](TASK2/RouteTable.png)
+### S3
+![](TASK2/S3.png)
+### CloudFrount
+![](TASK2/CloudFront.png)
+### Site 
+![](TASK2/site.png)
+
+
 
 
 
